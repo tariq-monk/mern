@@ -1,0 +1,47 @@
+namespace: mern
+mern:
+  defines: runnable
+  metadata:
+    name: mern
+    description: >-
+      A server for a MERN stack application, providing user authentication and
+      signup capabilities
+    icon: https://emojiapi.dev/api/v1/desktop_computer.svg
+  containers:
+    mern:
+      build: .
+  services:
+    http:
+      container: mern
+      port: <- $port
+      host-port: <- $port
+      publish: false
+      protocol: TCP
+      description: Main port for the application
+  connections:
+    mongodb:
+      target: mongodb/mongodb
+      service: mongodb
+  variables:
+    port:
+      env: PORT
+      type: int
+      description: Port to run the server on
+      value: '8000'
+    jwt-secret:
+      env: JWT_SECRET
+      type: string
+      description: Secret key for JWT token encryption
+      value: '!!!SETME-USE-SECRETS!!!'
+    mongodb-uri:
+      env: MONGODB_URI
+      type: string
+      description: URI for mongoDB connection
+      value: <- connection-hostname("mongodb")
+    node-env:
+      env: NODE_ENV
+      type: string
+      description: >-
+        Defines the environment in which the application is running. Used for
+        loading additional development configuration
+      value: '!!!SETME!!!'
