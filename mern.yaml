@@ -1,0 +1,45 @@
+namespace: mern
+mern:
+  defines: runnable
+  metadata:
+    name: mern
+    description: >-
+      A simple MERN (MongoDB, Express.js, React.js, Node.js) app for user
+      authentication.
+    icon: https://emojiapi.dev/api/v1/robot.svg
+  containers:
+    mern:
+      build: .
+  services:
+    http:
+      container: mern
+      port: <- $port
+      host-port: <- $port
+      publish: false
+      protocol: TCP
+      description: The app listens for HTTP traffic on this port.
+  connections:
+    mongodb:
+      target: mongodb/mongodb
+      service: mongodb
+  variables:
+    node-env:
+      env: NODE_ENV
+      type: string
+      description: Specifies the environment in which the application is running
+      value: production
+    jwt-secret:
+      env: JWT_SECRET
+      type: string
+      description: Secret for JWT token encryption
+      value: '!!!SETME-USE-SECRETS!!!'
+    mongodb-uri:
+      env: MONGODB_URI
+      type: string
+      description: The MongoDB connection string
+      value: <- connection-hostname("mongodb")
+    port:
+      env: PORT
+      type: string
+      description: The port the server listens on
+      value: '8000'
